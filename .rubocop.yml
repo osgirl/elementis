@@ -1,0 +1,11 @@
+Documentation:
+  Enabled: false
+
+StringLiterals:
+  Enabled: false
+
+LineLength:
+  Max: 120
+
+Metrics/MethodLength:
+  Enabled: False
