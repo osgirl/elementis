@@ -3,16 +3,20 @@ require 'test_helper'
 class ElementisConfiguration < Minitest::Test
   i_suck_and_my_tests_are_order_dependent!
 
+  def teardown
+    Elementis.reset
+  end
+
   should 'default element wait timeout' do
     assert_equal Elementis.config.element_timeout, 5
   end
 
   should 'set element wait timeout' do
     Elementis.configure do |config|
-      config.element_timeout = 30
+      config.element_timeout = 2
     end
 
-    assert_equal Elementis.config.element_timeout, 30
+    assert_equal Elementis.config.element_timeout, 2
   end
 
   should 'default log_level' do
@@ -110,5 +114,9 @@ class ElementisConfiguration < Minitest::Test
     assert_equal Elementis.config.capybara_exact, false
     assert_equal Elementis.config.capybara_ignore_hidden_elements, true
     assert_equal Elementis.config.capybara_visible_text_only, true
+  end
+
+  should 'print the configuration' do
+    Elementis.config.print_configuration
   end
 end

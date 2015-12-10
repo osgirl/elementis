@@ -1,4 +1,7 @@
 require "elementis/version"
+require "logging"
+include Elementis
+require "byebug"
 
 module Elementis
   class << self
@@ -26,13 +29,18 @@ module Elementis
     self.config ||= Configuration.new
   end
 
+  def self.javascript_driver?
+    Capybara.current_driver == Capybara.javascript_driver
+  end
+
   class Configuration
-    attr_accessor :element_timeout, :log_level
+    attr_accessor :page_load_timeout, :element_timeout, :log_level
     attr_accessor :highlight_verifications, :highlight_duration
     attr_accessor :capybara_match, :capybara_exact, :capybara_ignore_hidden_elements, :capybara_visible_text_only
 
 
     def initialize
+      @page_load_timeout = 15
       @element_timeout = 5
       @log_level = :fatal
       @highlight_verifications = false

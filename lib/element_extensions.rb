@@ -1,18 +1,20 @@
 # TODO: Fix execute_script
-
+require "capybara_extensions/script_args"
 include Elementis
 
 module Elementis
   module ElementExtensions
+    using ::CapybaraExtensions::ScriptArgs
+
     def highlight
       puts "Elementis.highlight_verifications = #{Elementis.config.highlight_verifications}"
       puts "Elementis.highlight_duration = #{Elementis.config.highlight_duration}"
-      if Elementis.config.highlight_verifications
-        original_border = page.execute_script("return arguments[0].style.border", element)
+      if Elementis.javascript_driver? && Elementis.config.highlight_verifications
+          original_border = page.execute_script("return arguments[0].style.border", element)
         original_background = page.execute_script("return arguments[0].style.backgroundColor", element)
-        page.execute_script("arguments[0].style.border='3px solid lime'; return;", element)
-        page.execute_script("arguments[0].style.backgroundColor='lime'; return;", element)
-        sleep Elementis.highlight_duration
+        page.execute_script("arguments[0].style.border='3px solid red'; return;", element)
+        # page.execute_script("arguments[0].style.backgroundColor='lime'; return;", element)
+        sleep Elementis.config.highlight_duration
         page.execute_script("arguments[0].style.border='" + original_border + "'; return;", element)
         page.execute_script("arguments[0].style.backgroundColor='" + original_background + "'; return;", element)
       end

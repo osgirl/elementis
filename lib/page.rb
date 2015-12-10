@@ -5,14 +5,9 @@ module Elementis
   class Page
     include Capybara::DSL
 
-    attr_accessor :url
-
-    def initialize
-      wait_for_elements
-    end
-
     # Override this to have your page object wait for certain elements to be displayed before continuing
     def wait_for_elements
+      puts("Base Page #{__method__}")
     end
 
 
@@ -21,8 +16,16 @@ module Elementis
     end
 
     def load
+      puts "url = #{@url}"
       visit @url unless @url.nil?
+      wait_for_ajax
       self
+    end
+
+    def wait_for_ajax
+      Timeout.timeout(Elementis.config.page_load_timeout) do
+        loop until page.evaluate_script('jQuery.active').zero?
+      end
     end
   end
 end

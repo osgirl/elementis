@@ -1,22 +1,24 @@
 require_relative 'test_helper'
 
-class GooglePage < Elementis::Page
-  attr_reader :search_entry, :search_btn
+class StoreDemoQA < Elementis::Page
+  attr_reader :blog_text, :buy_now_btn
 
   def initialize
-    @url = "http://www.google.com"
-    @search_entry = Element.new(:css, "#lst-ib")
-    @search_btn = Element.new(:css, "button[name=btnG")
+    @url = "/"
+    @blog_text = Element.new(:xpath, "//*[contains(text(),'Blog Post')]")
+    @buy_now_btn = Element.new(:css, "button[name=btnG]")
   end
 
   def wait_for_elements
-
+    puts("Inheritied page #{__method__}")
+    @blog_text.wait_until(5).visible
+    @buy_now_btn.wait_until(5).visible
   end
 end
 
 class App
-  def google_page
-    GooglePage.new
+  def demo_page
+    StoreDemoQA.new
   end
 end
 
@@ -25,16 +27,29 @@ class TestPage < Minitest::Test
 
   def setup
     @app = App.new
+    Capybara.current_driver = Capybara.javascript_driver
+    Capybara.app_host = "http://store.demoqa.com"
+  end
+
+  def teardown
+    Capybara.reset_sessions!
+    Capybara.use_default_driver
   end
 
   should "load the page" do
-    @app.google_page.load
-    @page = @app.google_page
-    @page.search_entry.text = "Ding Dong"
-    @page.search_btn.click
-    # assert_page_has_content?("Ding Dong")
-    # assert_page_has_content?("Urban Dictionary")
-    assert page.has_content?("Ding Dong"), "Fucking-A"
-    assert page_has_content?("Urban Dictionary"), "Fucking-B"
+    puts "Loading the demo page"
+    @page = @app.demo_page.load
+    puts "Demo page loaded"
+    # @page.wait_for_elements
+    @page.buy_now_btn.click
+
+    assert page.has_link?("Home"), "Fucking-A"
+    assert page.has_content?("Product Category"), "Fucking-B"
+    page.execute_script("")
+  end
+
+  should "test element presence" do
+    @app.demo_page.load
+    puts "Main nav present = #{Element.new(:css, '#main-nav').present?}"
   end
 end

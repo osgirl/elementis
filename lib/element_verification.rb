@@ -5,21 +5,22 @@ module Elementis
     #
     # @param [Element] element
     # @param [Integer] timeout
-    # @param [Boolean] not_verification - Whether or not we are 'NOT' verifying something about the element
+    # @param [Boolean] fail_test - fail test right away or not
+    # @param [Boolean] should_be - verify true or not
     #
-    def initialize(element, timeout, fail_test=true, element_should_exist=true)
-      @element = element # Capybara element
+    def initialize(element, timeout, fail_test = true, should_be = true)
+      @element = element # Elementis element
       @timeout = timeout
-      @should_exist = element_should_exist
+      @should_be = should_be
       @fail_test = fail_test
     end
 
     def not
-      ElementVerification.new(@element, @timeout, @fail_test, element_should_exist=false)
+      ElementVerification.new(@element, @timeout, @fail_test, false)
     end
 
     def text(text)
-      should_have_text = @should_exist
+      should_have_text = truthy
       element_text = @element.text
       if @element.present?
         $verification_passes += 1
@@ -55,69 +56,16 @@ module Elementis
       end
     end
 
+    def disabled
+      @element.element(wait: @timeout, disabled: @should_be)
+    end
+
     def visible
-      should_be_visible = @should_exist
-
-      if should_be_visible
-        fail_message = "Element should be visible."
-        pass_message = "Element is visible."
-      else
-        fail_message = "Element should not be visible."
-        pass_message = "Element is not visible."
-      end
-
-      wait = Selenium::WebDriver::Wait.new :timeout => @timeout, :interval => 1
-      begin
-        wait.until do
-          element_is_displayed = @element.displayed?
-          if element_is_displayed && should_be_visible
-            ElementExtensions.highlight(@element) if Elementis.config.highlight_verifications
-            log_success(pass_message)
-            return @element
-          elsif !element_is_displayed && !should_be_visible
-            puts("Confirming element is NOT visible...")
-            log_success(pass_message)
-          else
-            log_issue(fail_message)
-          end
-        end
-        @element
-      end
+      @element.element(wait: @timeout, visible: @should_be)
     end
 
     def present
-      should_be_present = @should_exist
-
-      if should_be_present
-        fail_message = "Element should be present."
-        pass_message = "is present."
-      else
-        fail_message = "Element should NOT be present."
-        pass_message = "is not present."
-      end
-
-      wait = Selenium::WebDriver::Wait.new :timeout => @timeout, :interval => 1
-      begin
-        wait.until do
-          element_is_present = @element.present?
-          if element_is_present && should_be_present
-            ElementExtensions.highlight(@element) if Elementis.config.highlight_verifications
-            log_success(pass_message)
-            return @element
-          elsif !element_is_present && !should_be_present
-            puts("Confirming element is NOT present...")
-            log_success(pass_message)
-          else
-            log_issue(fail_message)
-          end
-        end
-        @element
-      end
-    end
-
-    # TODO:
-    def value(value)
-      raise NotImplementedError
+      @element.present?
     end
 
     # TODO:
@@ -126,12 +74,17 @@ module Elementis
     end
 
     # TODO:
-    def attribute(attribute, value)
+    def having_value(value)
       raise NotImplementedError
     end
 
     # TODO:
-    def css(attribute, value)
+    def having_attribute(attribute, value)
+      raise NotImplementedError
+    end
+
+    # TODO:
+    def having_css(css, value)
       raise NotImplementedError
     end
 

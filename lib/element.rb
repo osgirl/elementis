@@ -1,7 +1,7 @@
 require 'element_extensions'
+require 'element_verification'
 require 'capybara'
 require 'capybara/dsl'
-require 'pry'
 
 class Element
   include Capybara::DSL
@@ -10,15 +10,15 @@ class Element
   def initialize(*args)
     @element = nil
     @args = args
-    @type, @locator = args
   end
 
-  def element
+  def element(options = {})
     if @element.nil? || is_stale?
-      puts "Finding element #{self}"
-      @element = Capybara::find(@type, @locator)
+      Log.info "Finding element #{self}"
+      @element = Capybara::find(@args, options)
     end
 
+    self.highlight
     @element
   end
 
@@ -27,12 +27,18 @@ class Element
   end
 
   def verify(timeout = nil)
-    timeout = Elementis.element_timeout if timeout.nil?
+    timeout = Elementis.config.element_timeout if timeout.nil?
+    ElementVerification.new(self, timeout)
+  end
+
+  def wait_until(timeout = nil)
+    timeout = Elementis.config.element_timeout if timeout.nil?
     ElementVerification.new(self, timeout)
   end
 
   def present?
-    has_selector?(@args)
+    puts "#{self.class.name}:#{__method__}"
+    Capybara::has_selector?(@args)
   end
 
   def visible?
@@ -48,16 +54,16 @@ class Element
   end
 
   def click
-    puts "Clicking on #{self}"
-    self.highlight
+    Log.info "Clicking on #{self}"
     element.click
   end
 
   def send_keys(*args)
-    puts("Typing: #{args} into element: (#{self})")
-    self.highlight
+    Log.info("Sending keys: #{args} to element: (#{self})")
     element.send_keys *args
   end
+
+  alias_method :set, :send_keys
 
   def text=(*args)
     element.set ''
@@ -129,7 +135,7 @@ class Element
         return false
       end
     rescue Exception => e
-      puts "Stale element detected.... #{self}"
+      Log.debug "Stale element detected... #{self}"
       return true
     end
   end
