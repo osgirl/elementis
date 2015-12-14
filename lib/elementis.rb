@@ -1,7 +1,4 @@
-require "elementis/version"
-require "logging"
-include Elementis
-require "byebug"
+require 'byebug'
 
 module Elementis
   class << self
@@ -13,10 +10,6 @@ module Elementis
     yield config
 
     Capybara.configure do |c|
-      c.match = config.capybara_match
-      c.exact = config.capybara_exact
-      c.ignore_hidden_elements = config.capybara_ignore_hidden_elements
-      c.visible_text_only = config.capybara_visible_text_only
       if Capybara.respond_to?(:default_max_wait_time)
         c.default_max_wait_time = config.element_timeout
       else
@@ -25,8 +18,8 @@ module Elementis
     end
   end
 
-  def self.reset
-    self.config ||= Configuration.new
+  def self.reset!
+    self.config = Configuration.new
   end
 
   def self.javascript_driver?
@@ -36,8 +29,6 @@ module Elementis
   class Configuration
     attr_accessor :page_load_timeout, :element_timeout, :log_level
     attr_accessor :highlight_verifications, :highlight_duration
-    attr_accessor :capybara_match, :capybara_exact, :capybara_ignore_hidden_elements, :capybara_visible_text_only
-
 
     def initialize
       @page_load_timeout = 15
@@ -45,16 +36,26 @@ module Elementis
       @log_level = :fatal
       @highlight_verifications = false
       @highlight_duration = 0.100
-      @capybara_match = :smart
-      @capybara_exact = false
-      @capybara_ignore_hidden_elements = true
-      @capybara_visible_text_only = true
     end
 
     def print_configuration
       puts "\n***** ELementis Configuration *****"
-      Elementis::Configuration.instance_variables.each { |x| puts "#{self.name}.#{x.to_s.gsub(/@/, '')} = #{instance_variable_get(x).inspect}"}
+      self.instance_variables.each { |x| puts "#{self.class.name}.#{x.to_s.gsub(/@/, '')} = #{instance_variable_get(x).inspect}"}
       puts
     end
   end
+
+
+  require 'elementis/version'
+  require 'elementis/logging'
+  require 'elementis/capybara_extensions/script_args'
+  require 'elementis/capybara_extensions/element/interactions'
+  require 'elementis/core_extensions/array/extract_options'
+  require 'elementis/element_extensions'
+  require 'elementis/element_verification'
+  require 'elementis/element'
+  require 'elementis/elements'
+  require 'elementis/page'
+
+  Capybara::Node::Element.include Elementis::CapybaraExtensions::Element::Interactions
 end

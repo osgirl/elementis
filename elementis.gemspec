@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "minitest", "~> 5.8.2"
   s.add_development_dependency "shoulda"
-  s.add_development_dependency "minitest-reporters", "~> 1.1"
+  s.add_development_dependency "minitest-focus", "~> 1.1.2"
   s.add_development_dependency "selenium-webdriver", "2.48.1"
   s.add_development_dependency "byebug", "~> 8.2.1"
 end
