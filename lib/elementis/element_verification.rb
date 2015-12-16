@@ -31,35 +31,35 @@ module Elementis
     def present
       present = @element.present?
 
-      raise Capybara::ExpectationNotMet if !present && @should_be
-      raise Capybara::ExpectationNotMet if present && !@should_be
+      fail Capybara::ExpectationNotMet if !present && @should_be
+      fail Capybara::ExpectationNotMet if present && !@should_be
 
       @should_be ? @element.element : nil
     end
 
-    # TODO:
+    # TODO: selected
     def selected
-      raise NotImplementedError
+      fail NotImplementedError
     end
 
-    # TODO:
-    def has_text(text)
-      raise NotImplementedError
+    # TODO: has_text
+    def text(_text)
+      fail NotImplementedError
     end
 
-    # TODO:
-    def has_value(value)
-      raise NotImplementedError
+    # TODO: has_value
+    def value(_value)
+      fail NotImplementedError
     end
 
-    # TODO:
-    def has_attribute(attribute, value)
-      raise NotImplementedError
+    # TODO: has_attribute
+    def attribute(_attribute, _value)
+      fail NotImplementedError
     end
 
-    # TODO:
-    def has_css(css, value)
-      raise NotImplementedError
+    # TODO: has_css
+    def css(_css, _value)
+      fail NotImplementedError
     end
   end
 end

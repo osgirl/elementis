@@ -1,5 +1,3 @@
-require 'byebug'
-
 module Elementis
   class << self
     attr_accessor :config
@@ -40,22 +38,23 @@ module Elementis
 
     def print_configuration
       puts "\n***** ELementis Configuration *****"
-      self.instance_variables.each { |x| puts "#{self.class.name}.#{x.to_s.gsub(/@/, '')} = #{instance_variable_get(x).inspect}"}
+      instance_variables.each do |x|
+        puts "#{self.class.name}.#{x.to_s.gsub(/@/, '')} = #{instance_variable_get(x).inspect}"
+      end
       puts
     end
   end
 
-
-  require 'elementis/version'
-  require 'elementis/logging'
-  require 'elementis/capybara_extensions/script_args'
-  require 'elementis/capybara_extensions/element/interactions'
-  require 'elementis/core_extensions/array/extract_options'
-  require 'elementis/element_extensions'
-  require 'elementis/element_verification'
-  require 'elementis/element'
-  require 'elementis/elements'
-  require 'elementis/page'
+  require "elementis/version"
+  require "elementis/logging"
+  require "elementis/capybara_extensions/script_args"
+  require "elementis/capybara_extensions/element/interactions"
+  require "elementis/core_extensions/array/extract_options"
+  require "elementis/element_extensions"
+  require "elementis/element_verification"
+  require "elementis/element"
+  require "elementis/elements"
+  require "elementis/page"
 
   Capybara::Node::Element.include Elementis::CapybaraExtensions::Element::Interactions
 end

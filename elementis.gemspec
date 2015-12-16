@@ -1,7 +1,7 @@
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'elementis/version'
+require "elementis/version"
 
 Gem::Specification.new do |s|
   s.name          = "elementis"
@@ -9,7 +9,8 @@ Gem::Specification.new do |s|
   s.authors       = ["AlconTech LLC"]
 
   s.summary       = "Page Object DSL utilizing Capybara"
-  s.description   = "Elementis provides an simple, expressive DSL for verifying your site, utilizing the Page Object Model pattern around Capybara"
+  s.description   = "Elementis provides an simple, expressive DSL for verifying your site, utilizing the
+                    Page Object Model pattern around Capybara"
   s.homepage      = "http://github.com/rizzza/elementis"
   s.license       = "MIT"
   s.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|s|features)/}) }

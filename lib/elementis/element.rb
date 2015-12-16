@@ -11,11 +11,11 @@ module Elementis
     end
 
     def element(opts = {})
-      if @element.nil? || is_stale?
+      if @element.nil? || stale?
         unless opts.empty?
           requested_opts = @args.extract_options!
           requested_opts.merge!(opts)
-          @args = @args + [requested_opts]
+          @args += [requested_opts]
         end
 
         Log.info "Finding element #{self}"
@@ -33,7 +33,7 @@ module Elementis
       end
     end
 
-    # TODO:
+    # TODO: list of verifications? And addition of callback or accessor/clear
     def verify(timeout = nil)
       timeout = Elementis.config.element_timeout if timeout.nil?
       ElementVerification.new(self, timeout)
@@ -63,13 +63,13 @@ module Elementis
 
     def send_keys(*args)
       Log.info("Sending keys: #{args} to element: (#{self})")
-      element.send_keys *args
+      element.send_keys(*args)
     end
 
     def text=(*args)
       Log.info("Setting element text to: #{args} to element: (#{self})")
-      element.set ''
-      element.set *args
+      element.set("")
+      element.set(*args)
     end
 
     def to_s
@@ -86,15 +86,11 @@ module Elementis
 
     private
 
-    def is_stale?
-      begin
-        if !@element.disabled?
-          return false
-        end
-      rescue Exception
-        Log.debug "Element '#{self}' is stale"
-        return true
-      end
+    def stale?
+      return false unless @element.disabled?
+    rescue StandardError
+      Log.debug "Element '#{self}' is stale"
+      return true
     end
   end
 end

@@ -1,6 +1,5 @@
 # Logger class wraps around ruby 'logger' gem to provide diagnostic and workflow information
-
-require 'logger'
+require "logger"
 
 # Add in multiple device logging directly into Logger class
 class Logger
@@ -34,20 +33,18 @@ class Logger
       old_write(message)
 
       @devs ||= {}
-      @devs.each do |log, dev|
+      @devs.each do |_log, dev|
         dev.write(message)
       end
     end
   end
 end # class logger
 
-
 # Singleton Logger class
 module Elementis
   class Log
-    # make this class static
+    # static
     class << self
-
       #
       # more generic than INFO, useful for debugging issues
       # DEBUG = 0
@@ -78,60 +75,63 @@ module Elementis
         log.error(msg)
       end
 
-      def add_device device
-        @@devices ||= []
+      def add_device(device)
+        @devices ||= []
         log.attach(device)
-        @@devices << device
+        @devices << device
       end
 
       def close
-        @@devices.each { |dev| @@logger.detach(dev) }
-        @@devices.clear
+        @devices.each { |dev| @logger.detach(dev) }
+        @devices.clear
         log.close if log
       end
-
 
       private
 
       def log
-        @@logger ||= initialize_logger
+        @logger ||= initialize_logger
       end
 
       def initialize_logger
         # log to STDOUT and file
-        logger ||= Logger.new(STDOUT)
+        @logger ||= Logger.new(STDOUT)
 
-        # messages that have the set level or higher will be logged
-        case Elementis.config.log_level
-          when :debug then
-            level = Logger::DEBUG
-          when :info then
-            level = Logger::INFO
-          when :warn then
-            level = Logger::WARN
-          when :error then
-            level = Logger::ERROR
-          when :fatal then
-            level = Logger::FATAL
-        end
+        @logger.level = logger_level(Elementis.config.log_level)
 
-        logger.level = level
-
-        logger.formatter = proc do |severity, datetime, progname, msg|
+        @logger.formatter = proc do |severity, datetime, _progname, msg|
           base_msg = "[#{datetime.strftime('%Y-%m-%d %H:%M:%S')}][#{severity}]"
-          sev = severity.to_s
-          if sev.eql?("DEBUG")
-            "#{base_msg}   #{msg}\n"
-          elsif sev.eql?("INFO")
+          case severity.to_s
+          when "DEBUG"
+            "#{base_msg}  #{msg}\n"
+          when "INFO"
             "#{base_msg}  > #{msg}\n"
-          elsif sev.eql?("WARN")
+          when "WARN"
             "#{base_msg}  X #{msg}\n"
           else
-            "#{base_msg} X #{msg}\n"
+            "#{base_msg}  X #{msg}\n"
           end
         end
 
-        logger
+        @logger
+      end
+
+      private
+
+      # messages that have the set level or higher will be logged
+      def logger_level(level)
+        case level
+        when :debug then
+          Logger::DEBUG
+        when :info then
+          Logger::INFO
+        when :warn then
+          Logger::WARN
+        when :error then
+          Logger::ERROR
+        when :fatal then
+          Logger::FATAL
+        end
       end
     end
   end

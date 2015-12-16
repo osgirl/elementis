@@ -1,4 +1,4 @@
-require_relative 'test_helper'
+require_relative "test_helper"
 
 class StoreDemoQA < Elementis::Page
   attr_reader :blog_text, :buy_now_btn, :search, :main_nav, :dne, :hidden
@@ -66,7 +66,7 @@ class TestPage < Minitest::Test
   end
 
   should "set text using =" do
-    assert  @page.search.text = "Marley"
+    assert @page.search.text = "Marley"
   end
 
   should "send text to element using sendkeys" do
@@ -88,12 +88,12 @@ class TestPage < Minitest::Test
   end
 
   should "wait until not present and return nil" do
-    assert_equal nil,  @page.dne.wait_until.not.present
+    assert_equal nil, @page.dne.wait_until.not.present
   end
 
   should "wait until visible and return element" do
     assert_equal @page.main_nav.element, @page.main_nav.wait_until.visible
-    assert_equal  @page.blog_text.element, @page.blog_text.wait_until.visible
+    assert_equal @page.blog_text.element, @page.blog_text.wait_until.visible
   end
 
   should "wait until not visible element and return element" do

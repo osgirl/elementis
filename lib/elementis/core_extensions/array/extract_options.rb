@@ -4,7 +4,7 @@ module Elementis
       module ExtractOptions
         def extract_options!
           last.is_a?(::Hash) ? pop : {}
-        end unless defined? Array.new.extract_options!
+        end unless defined? [].extract_options!
       end
     end
   end

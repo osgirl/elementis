@@ -8,7 +8,7 @@ module Elementis
     end
 
     def elements
-      @elements = all(*args).map {|e| Element.new(*args).element = e} unless @elements.nil?
+      @elements = all(*args).map { |e| Element.new(*args).element = e } unless @elements.nil?
       @elements
     end
 
