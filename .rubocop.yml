@@ -1,11 +1,28 @@
+AbcSize:
+  Enabled: false
+
 Documentation:
   Enabled: false
 
 StringLiterals:
-  Enabled: false
+  EnforcedStyle: double_quotes
+  Severity: error
+
+PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%w': '{}'
 
 LineLength:
   Max: 120
 
 Metrics/MethodLength:
   Enabled: False
+
+MultilineTernaryOperator:
+  Severity: error
+
+RedundantSelf:
+  Enabled: false
+
+UnreachableCode:
+  Severity: error

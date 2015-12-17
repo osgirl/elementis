@@ -1,16 +1,24 @@
-# minitest 'minitest/unit'
-require 'minitest/autorun'
-require 'minitest/pride'
-require 'minitest/reporters'
-require 'shoulda/context'
+require "minitest/autorun"
+require "minitest/pride"
+require "minitest/focus"
+require "shoulda/context"
 
-require 'selenium-webdriver'
-require 'capybara'
-require 'capybara/dsl'
-require 'elementis'
+require "selenium-webdriver"
+require "capybara"
+require "capybara/dsl"
 
-Minitest::Reporters.use!
+require "elementis"
 
-$LOAD_PATH << '../lib'
+Capybara.current_driver = :selenium
+Capybara.run_server = false
+Capybara.configure do |c|
+  c.match = :smart
+  c.exact = false
+  c.ignore_hidden_elements = true
+  c.visible_text_only = true
+end
+
+$LOAD_PATH << "../lib"
 
 Elementis.configure {}
+Elementis.config.print_configuration
