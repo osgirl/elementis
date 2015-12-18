@@ -31,6 +31,7 @@ class TestPage < Minitest::Test
 
   def setup
     Elementis.configure do |config|
+      config.element_timeout = 2
       config.highlight_verifications = true
       config.highlight_duration = 0.2
       config.log_level = :fatal
@@ -100,25 +101,32 @@ class TestPage < Minitest::Test
     assert_equal @page.hidden.element, @page.hidden.wait_until.not.visible
   end
 
+  should "wait until visible and return text with user specified timeout" do
+    assert_equal "Buy Now", @page.buy_now_btn.wait_until(1).visible.text
+  end
+
   should "be visible" do
     assert_equal true, @page.main_nav.visible?
   end
 
-  should "test element presence with specific timeout" do
-    assert_equal "Buy Now", @page.buy_now_btn.wait_until(10).visible.text
+  should "raise error with user specified timeout: element is visible, verifying not" do
+    assert_raises(Capybara::ElementNotFound) { @page.main_nav.wait_until(1).not.visible }
   end
 
   should "find an element within a element" do
     assert @page.main_nav.find_in_children("input.search").set "Jah live"
   end
 
-  should "fail to find an element within an element" do
+  should "use DSL for element within an element" do
+    assert @page.main_nav.find_in_children("input.search").wait_until(1).visible.set "Yey-ah"
+  end
+
+  should "fail to find a valid element not a child" do
     assert_raises(Capybara::ElementNotFound) { @page.main_nav.find_in_children("#logo") }
   end
 
-  should "use DSL for element within an element" do
-    skip "Pending"
-    # assert @page.main_nav.find_in_children("input.search").wait_until(1).visible?
+  should "fail to find a unknown element within an element" do
+    assert_raises(Capybara::ElementNotFound) { @page.main_nav.find_in_children("#invalid") }
   end
 
   should "execute javascript on the page" do

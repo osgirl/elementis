@@ -5,8 +5,6 @@ module Elementis
 
     def initialize(*args)
       @element = nil
-      @by = args[0]
-      @locator = args[1]
       @args = args
     end
 
@@ -28,9 +26,13 @@ module Elementis
 
     # Find an element within this element
     def find_in_children(*args)
+      child = nil
       within(element) do
-        find(*args)
+        child = self.class.new(*args)
+        child.element
       end
+
+      child
     end
 
     # TODO: list of verifications? And addition of callback or accessor/clear
@@ -45,7 +47,7 @@ module Elementis
     end
 
     def present?
-      page.has_selector?(@by, @locator)
+      page.has_selector?(*@args)
     end
 
     def visible?
