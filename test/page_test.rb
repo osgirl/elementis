@@ -1,8 +1,6 @@
 require_relative "test_helper"
 
 class StoreDemoQA < Elementis::Page
-  attr_reader :blog_text, :buy_now_btn, :search, :main_nav, :my_account, :dne, :hidden
-
   def initialize
     @url = "/"
     @blog_text = Element.new(:xpath, "//*[contains(text(),'Blog Post')]")

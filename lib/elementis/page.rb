@@ -19,6 +19,15 @@ module Elementis
       end
     end
 
+    def method_missing(method_name, *args, &block)
+      vars = self.instance_variables
+      if vars.include? "@#{method_name}".to_sym
+        instance_variable_get "@#{method_name}"
+      else
+        super
+      end
+    end
+
     private
 
     def jquery_loaded?
