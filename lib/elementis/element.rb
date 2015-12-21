@@ -3,6 +3,8 @@ module Elementis
     include Capybara::DSL
     include Elementis::ElementExtensions
 
+    attr_writer :element
+
     def initialize(*args)
       @element = nil
       @args = args
@@ -24,10 +26,6 @@ module Elementis
       @element
     end
 
-    def element=(e)
-      @element = e
-    end
-
     # Find an element within this element
     def find_in_children(*args)
       child = nil
@@ -46,7 +44,6 @@ module Elementis
     def parent
       fail NotImplementedError
     end
-
 
     # TODO: list of verifications? And addition of callback or accessor/clear
     def verify(timeout = nil)

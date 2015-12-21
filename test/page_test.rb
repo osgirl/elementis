@@ -58,13 +58,13 @@ class TestPage < Minitest::Test
 
   should "pass capybara element methods using method_missing" do
     assert_equal "nav", @page.main_nav.tag_name
-    assert page.has_link?("Home")
+    assert page.has_link?("Your Account")
     assert page.has_content?("Product Category")
   end
 
-  should "click on text using click_on" do
-    click_on "All Product"
-    assert_equal "/products-page/product-category/", page.current_path
+  should "click on link text using click_on" do
+    click_on "Your Account"
+    assert_equal "/products-page/your-account/", page.current_path
   end
 
   should "set text using =" do
@@ -136,7 +136,7 @@ class TestPage < Minitest::Test
     assert_raises(Capybara::ElementNotFound) { @page.my_account.verify.visible }
   end
 
-  should  "execute javascript to show element" do
+  should "execute javascript to show element" do
     @page.my_account.hide
     assert @page.my_account.verify.not.visible
     @page.my_account.show

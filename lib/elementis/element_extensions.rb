@@ -1,7 +1,5 @@
 module Elementis
   module ElementExtensions
-    using Elementis::CapybaraExtensions::ScriptArgs
-
     def highlight
       perform
     end
