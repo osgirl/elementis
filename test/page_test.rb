@@ -1,7 +1,7 @@
 require_relative "test_helper"
 
 class StoreDemoQA < Elementis::Page
-  attr_reader :blog_text, :buy_now_btn, :search, :main_nav, :dne, :hidden
+  attr_reader :blog_text, :buy_now_btn, :search, :main_nav, :my_account, :dne, :hidden
 
   def initialize
     @url = "/"
@@ -9,6 +9,7 @@ class StoreDemoQA < Elementis::Page
     @buy_now_btn = Element.new(:css, ".buynow")
     @search = Element.new(:css, "input.search", visible: :all)
     @main_nav = Element.new(:css, "#main-nav", visible: :all)
+    @my_account = Element.new("#account")
     @dne = Element.new(".dne", visible: :all)
     @hidden = Element.new("#lightbox_slideshow", visible: :all)
   end
@@ -127,6 +128,20 @@ class TestPage < Minitest::Test
 
   should "fail to find a unknown element within an element" do
     assert_raises(Capybara::ElementNotFound) { @page.main_nav.find_in_children("#invalid") }
+  end
+
+  should "execute javascript to hide element" do
+    @page.my_account.hide
+    assert @page.my_account.verify.not.visible
+    assert_raises(Capybara::ElementNotFound) { @page.my_account.verify.visible }
+  end
+
+  should  "execute javascript to show element" do
+    @page.my_account.hide
+    assert @page.my_account.verify.not.visible
+    @page.my_account.show
+    assert @page.my_account.verify.visible
+    assert_raises(Capybara::ElementNotFound) { @page.my_account.verify.not.visible }
   end
 
   should "execute javascript on the page" do

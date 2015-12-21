@@ -35,6 +35,7 @@ module Elementis
 
     def highlight_element
       return unless Elementis.config.highlight_verifications
+      return unless @element
 
       original_border = page.execute_script("return arguments[0].style.border", @element)
       original_background = page.execute_script("return arguments[0].style.backgroundColor", @element)
@@ -45,7 +46,7 @@ module Elementis
     end
 
     def scroll_to_element
-      page.execute_script("arguments[0].scrollIntoView(); return;", @element)
+      page.execute_script("arguments[0].scrollIntoView(); return;", element)
     end
 
     def hover_element
@@ -54,7 +55,7 @@ module Elementis
         evObj.initMouseEvent(\"mouseover\",true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
         arguments[0].dispatchEvent(evObj);
       SCRIPT
-      page.execute_script(script, @element)
+      page.execute_script(script, element)
     end
 
     def unhover_element
@@ -63,15 +64,15 @@ module Elementis
         evObj.initMouseEvent(\"mouseout\",true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
         arguments[0].dispatchEvent(evObj);
       SCRIPT
-      page.execute_script(script, @element)
+      page.execute_script(script, element)
     end
 
     def hide_element
-      page.execute_script("arguments[0].style.visibility='hidden';return;", @element)
+      page.execute_script("arguments[0].style.visibility='hidden';return;", element)
     end
 
     def show_element
-      page.execute_script("arguments[0].style.visibility='visible';return;", @element)
+      page.execute_script("arguments[0].style.visibility='visible';return;", element)
     end
   end
 end

@@ -9,7 +9,7 @@ module Elementis
     end
 
     def element(opts = {})
-      if @element.nil? || stale?
+      if stale? || !opts.empty?
         unless opts.empty?
           requested_opts = @args.extract_options!
           requested_opts.merge!(opts)
@@ -24,6 +24,10 @@ module Elementis
       @element
     end
 
+    def element=(e)
+      @element = e
+    end
+
     # Find an element within this element
     def find_in_children(*args)
       child = nil
@@ -34,6 +38,15 @@ module Elementis
 
       child
     end
+
+    def find_in_siblings(*_args)
+      fail NotImplementedError
+    end
+
+    def parent
+      fail NotImplementedError
+    end
+
 
     # TODO: list of verifications? And addition of callback or accessor/clear
     def verify(timeout = nil)
@@ -69,7 +82,7 @@ module Elementis
     end
 
     def text=(*args)
-      Log.info("Setting element text to: #{args} to element: (#{self})")
+      Log.info("Setting element (#{self}) text to: #{args} ")
       element.set("")
       element.set(*args)
     end
@@ -89,10 +102,14 @@ module Elementis
     private
 
     def stale?
-      return false unless @element.disabled?
+      return true if @element.nil?
+      @element.disabled?
     rescue StandardError
-      Log.debug "Element '#{self}' is stale"
       return true
+    end
+
+    def force_stale
+      @element = nil
     end
   end
 end
