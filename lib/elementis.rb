@@ -55,6 +55,4 @@ module Elementis
   require "elementis/element"
   require "elementis/elements"
   require "elementis/page"
-
-  Capybara::Node::Element.include Elementis::CapybaraExtensions::Element::Interactions
 end

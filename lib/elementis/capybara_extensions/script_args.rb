@@ -1,14 +1,14 @@
 module Elementis
   module CapybaraExtensions
     module ScriptArgs
-      refine Capybara::Session do
+      Capybara::Session.module_exec do
         def execute_script(script, *args)
           @touched = true
           driver.execute_script(script, *args)
         end
       end
 
-      refine Capybara::Selenium::Driver do
+      Capybara::Selenium::Driver.module_exec do
         def execute_script(script, *args)
           args.map! { |e| e.is_a?(Capybara::Node::Element) ? e.native : e }
           browser.execute_script(script, *args)
