@@ -8,6 +8,4 @@ module Elementis
       end
     end
   end
-
-  Array.include Elementis::CoreExtensions::Array::ExtractOptions
 end

@@ -57,4 +57,5 @@ module Elementis
   require "elementis/page"
 
   Capybara::Node::Element.include Elementis::CapybaraExtensions::Element::Interactions
+  Array.include Elementis::CoreExtensions::Array::ExtractOptions
 end
