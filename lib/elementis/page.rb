@@ -14,6 +14,7 @@ module Elementis
 
     def wait_for_page_load
       return unless Elementis.javascript_driver?
+
       Timeout.timeout(Elementis.config.page_load_timeout) do
         loop until page_loaded? && jquery_loaded?
       end

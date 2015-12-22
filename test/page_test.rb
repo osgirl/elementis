@@ -49,6 +49,14 @@ class TestPage < Minitest::Test
     Capybara.reset_sessions!
   end
 
+  should "timeout waiting for page to load" do
+    Elementis.configure do |config|
+      config.page_load_timeout = 0.5
+    end
+
+    assert_raises(Timeout::Error) { visit "localhost" }
+  end
+
   should "load a page" do
     visit "/products-page/product-category/ipads/"
     assert_equal "/products-page/product-category/ipads/", page.current_path
@@ -142,11 +150,7 @@ class TestPage < Minitest::Test
     assert_raises(Capybara::ElementNotFound) { @page.my_account.verify.not.visible }
   end
 
-  should "execute javascript on the page" do
-    page.execute_script("")
-  end
-
   should "execute javascript on an element" do
-    skip "Pending"
+    page.execute_script("arguments[0].scrollIntoView(); return;", find(:xpath, "//*[text()='Your Account']"))
   end
 end
