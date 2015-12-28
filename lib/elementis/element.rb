@@ -1,6 +1,5 @@
 module Elementis
   class Element
-    include Capybara::DSL
     include Elementis::ElementExtensions
 
     attr_writer :element
@@ -19,7 +18,7 @@ module Elementis
         end
 
         Log.info "Finding element #{self}"
-        @element = find(*@args)
+        @element = Capybara.current_session.find(*@args)
       end
 
       self.highlight
@@ -29,7 +28,7 @@ module Elementis
     # Find an element within this element
     def find_in_children(*args)
       child = nil
-      within(element) do
+      Capybara.current_session.within(element) do
         child = self.class.new(*args)
         child.element
       end
@@ -57,7 +56,7 @@ module Elementis
     end
 
     def present?
-      page.has_selector?(*@args)
+      Capybara.current_session.has_selector?(*@args)
     end
 
     def visible?
@@ -71,6 +70,11 @@ module Elementis
     def click
       Log.info "Clicking on #{self}"
       element.click
+    end
+
+    def set(value)
+      Log.info "Setting #{self} to #{value}"
+      element.set(value)
     end
 
     def send_keys(*args)
@@ -102,6 +106,7 @@ module Elementis
       return true if @element.nil?
       @element.disabled?
     rescue StandardError
+      Log.info("Element #{self} is stale")
       return true
     end
 

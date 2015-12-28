@@ -1,3 +1,6 @@
+require "simplecov"
+SimpleCov.start
+
 require "minitest/autorun"
 require "minitest/pride"
 require "minitest/focus"
@@ -8,6 +11,7 @@ require "capybara"
 require "capybara/dsl"
 
 require "elementis"
+require "byebug"
 
 Capybara.current_driver = :selenium
 Capybara.run_server = false

@@ -9,7 +9,10 @@ gem "selenium-webdriver"
 group :development do
   gem "minitest"
   gem "minitest-reporters"
-  gem "rubocop"
   gem "yard"
+end
+
+group :test do
+  gem "rubocop", require: false
   gem "simplecov", require: false
 end
