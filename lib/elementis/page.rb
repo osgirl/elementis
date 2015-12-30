@@ -2,12 +2,14 @@ module Elementis
   class Page
     include Capybara::DSL
 
+    attr_accessor :url
+
     def page
       @page ||= Capybara.current_session
     end
 
     def load
-      visit @url unless @url.nil?
+      visit url unless url.nil?
       wait_for_page_load
       self
     end
