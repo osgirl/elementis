@@ -1,6 +1,7 @@
 module Elementis
   class Page
     include Capybara::DSL
+    extend ElementBuilder
 
     def page
       @page ||= Capybara.current_session

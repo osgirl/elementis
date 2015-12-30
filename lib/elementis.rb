@@ -50,6 +50,7 @@ module Elementis
   require "elementis/capybara_extensions/script_args"
   require "elementis/capybara_extensions/element/interactions"
   require "elementis/core_extensions/array/extract_options"
+  require "elementis/element_builder"
   require "elementis/element_extensions"
   require "elementis/element_verification"
   require "elementis/element"

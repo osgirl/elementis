@@ -1,21 +1,21 @@
 require_relative "test_helper"
 
 class StoreDemoQA < Elementis::Page
+  element :blog_text, ".footer_blog p"
+  element :buy_now_btn, :css, ".buynow"
+  element :search, :css, "input.search", visible: :all
+  element :main_nav, :css, "#main-nav", visible: :all
+  element :my_account, "#account"
+  element :my_account_link, "#account a"
+  element :logo, "#logo"
+  element :dne, ".dne", visible: :all
+  element :hidden, "#lightbox_slideshow", visible: :all
+
   def initialize
     @url = "/"
-    @blog_text = Element.new(".footer_blog p")
-    @buy_now_btn = Element.new(:css, ".buynow")
-    @search = Element.new(:css, "input.search", visible: :all)
-    @main_nav = Element.new(:css, "#main-nav", visible: :all)
-    @my_account = Element.new("#account")
-    @my_account_link = Element.new("#account a")
-    @logo = Element.new("#logo")
-    @dne = Element.new(".dne", visible: :all)
-    @hidden = Element.new("#lightbox_slideshow", visible: :all)
   end
 
   def wait_for_elements
-    puts("Inheritied page #{__method__}")
     @blog_text.wait_until(5).visible
     @buy_now_btn.wait_until(5).visible
   end
@@ -117,7 +117,7 @@ class TestPage < Minitest::Test
   should "verify element extension presence is false" do
     assert_equal true, @page.blog_text.present?, "should be present"
   end
-
+  
   should "wait until present and return element" do
     assert @page.main_nav.wait_until.present.instance_of?(Elementis::Element)
   end

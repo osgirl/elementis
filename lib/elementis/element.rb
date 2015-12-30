@@ -6,6 +6,7 @@ module Elementis
 
     def initialize(*args)
       @element = nil
+      @name = args.delete_at(0)
       @args = args
     end
 
@@ -29,7 +30,7 @@ module Elementis
     def find_in_children(*args)
       child = nil
       Capybara.current_session.within(element) do
-        child = self.class.new(*args)
+        child = self.class.new(:child, *args)
         child.element
       end
 
