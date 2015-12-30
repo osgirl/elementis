@@ -71,7 +71,7 @@ module Elementis
     end
 
     def show_element
-      Capybara.current_session.execute_script("arguments[0].style.visibility='visible';return;", element)
+      Capybara.current_session.execute_script("arguments[0].style.visibility='visible';return;", element(visible: :hidden))
     end
   end
 end

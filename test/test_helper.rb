@@ -11,6 +11,7 @@ require "capybara"
 require "capybara/dsl"
 
 require "elementis"
+require "test_case"
 require "byebug"
 
 Capybara.current_driver = :selenium

@@ -1,4 +1,6 @@
 module Elementis
+  class PageUrlNotSetError < StandardError; end
+
   class << self
     attr_accessor :config
   end

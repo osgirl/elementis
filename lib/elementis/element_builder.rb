@@ -5,10 +5,5 @@ module Elementis
         Element.new(name, *args)
       end
     end
-
-    # TODO: Build me
-    def elements(_name, *_args)
-
-    end
   end
 end

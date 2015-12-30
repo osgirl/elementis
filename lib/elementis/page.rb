@@ -7,8 +7,15 @@ module Elementis
       @page ||= Capybara.current_session
     end
 
+    def self.page_url(url)
+      define_method :url do
+        url
+      end
+    end
+
     def load
-      visit @url unless @url.nil?
+      fail PageUrlNotSetError, "No page_url is set" unless self.respond_to?(:url)
+      visit url
       wait_for_page_load
       self
     end
