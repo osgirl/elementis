@@ -47,6 +47,8 @@ module Elementis
     end
   end
 
+  require "capybara"
+  require "capybara/dsl"
   require "elementis/version"
   require "elementis/logging"
   require "elementis/capybara_extensions/script_args"

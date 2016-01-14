@@ -4,7 +4,6 @@ gemspec
 
 gem "rake"
 gem "wait"
-gem "selenium-webdriver"
 
 group :development do
   gem "minitest"
@@ -13,6 +12,7 @@ group :development do
 end
 
 group :test do
+  gem "selenium-webdriver"
   gem "rubocop", require: false
   gem "simplecov", require: false
 end

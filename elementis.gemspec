@@ -19,11 +19,13 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "capybara", "~> 2.1"
-  s.add_dependency "capybara_minitest_spec"
 
-  s.add_development_dependency "minitest", "~> 5.8.2"
-  s.add_development_dependency "shoulda"
-  s.add_development_dependency "minitest-focus", "~> 1.1.2"
-  s.add_development_dependency "selenium-webdriver", "2.48.1"
   s.add_development_dependency "byebug", "~> 8.2.1"
+  s.add_development_dependency "bundler", "> 1.3.0"
+  s.add_development_dependency "minitest", "~> 5.8.2"
+  s.add_development_dependency "minitest-focus", "~> 1.1.2"
+  s.add_development_dependency "capybara_minitest_spec"
+  s.add_development_dependency "rake"
+  s.add_development_dependency "selenium-webdriver"
+  s.add_development_dependency "shoulda"
 end

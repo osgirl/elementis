@@ -1,5 +1,7 @@
 require "simplecov"
-SimpleCov.start
+SimpleCov.start do
+  add_filter "../vendor/"
+end
 
 require "minitest/autorun"
 require "minitest/pride"
@@ -7,12 +9,8 @@ require "minitest/focus"
 require "shoulda/context"
 
 require "selenium-webdriver"
-require "capybara"
-require "capybara/dsl"
-
 require "elementis"
 require "test_case"
-require "byebug"
 
 Capybara.current_driver = :selenium
 Capybara.run_server = false
